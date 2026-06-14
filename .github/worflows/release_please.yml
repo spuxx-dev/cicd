@@ -1,0 +1,32 @@
+name: Run release-please
+
+on:
+  workflow_call:
+    inputs:
+      CONFIG_FILE_PATH:
+        description: 'The path to the release-please configuration file'
+        type: string
+        required: false
+        default: '.release-please/config.json'
+      MANIFEST_FILE_PATH:
+        description: 'The path to the release-please manifest file'
+        type: string
+        required: false
+        default: '.release-please/manifest.json'
+    secrets:
+      TOKEN:
+        description: "Token to authenticate with GitHub"
+        required: true
+
+jobs:
+  run_release_please:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Run release-please
+      uses: googleapis/release-please-action@v4
+      with:
+        token: ${{ secrets.TOKEN }}
+        config-file: ${{ inputs.CONFIG_FILE_PATH }}
+        manifest-file: ${{ inputs.MANIFEST_FILE_PATH }}
