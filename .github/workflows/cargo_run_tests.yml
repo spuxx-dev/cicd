@@ -1,0 +1,24 @@
+name: Cargo - Run Tests
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  cargo_run_tests:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Run tests
+        run: cargo test --workspace --all-features
